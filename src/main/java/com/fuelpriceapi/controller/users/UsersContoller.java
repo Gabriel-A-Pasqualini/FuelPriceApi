@@ -9,11 +9,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 
-@Tag(name = "Users", description = "Endpoint de usuários")
+@Tag(name = "Users", description = "User Endpoints")
 @RestController
 @RequestMapping("/users")
 public class UsersContoller {
-    @Operation(summary = "Busca os usuários")
+    
+    @Operation(summary = "Get all users")
     @GetMapping
     public ResponseEntity<LoginResponseDTO> getUsers() {
         return null;

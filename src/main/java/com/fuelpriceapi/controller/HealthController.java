@@ -2,7 +2,7 @@ package com.fuelpriceapi.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.web.bind.annotation.*;
-import java.util.Map;
+import com.fuelpriceapi.entity.health.Health;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "Health", description = "Endpoints de verificação da API")
@@ -12,8 +12,10 @@ public class HealthController {
 
     @Operation(summary = "Verifica se a API está online")
     @GetMapping
-    public Map<String, String> health() {
-        return Map.of("status", "ok");
-    }
-    //http://localhost:8080/swagger-ui.html
+    public Health health() {
+        return new Health(
+            "ok",
+            "API is healthy"
+        );
+    }   
 }
