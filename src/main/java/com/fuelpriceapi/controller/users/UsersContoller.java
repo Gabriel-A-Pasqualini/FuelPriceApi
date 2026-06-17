@@ -4,7 +4,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.fuelpriceapi.dto.userDto.LoginResponseDTO;
+
+import com.fuelpriceapi.model.dto.authDto.LoginResponseDto;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -16,7 +18,7 @@ public class UsersContoller {
     
     @Operation(summary = "Get all users")
     @GetMapping
-    public ResponseEntity<LoginResponseDTO> getUsers() {
+    public ResponseEntity<LoginResponseDto> getUsers() {
         return null;
     }
 }

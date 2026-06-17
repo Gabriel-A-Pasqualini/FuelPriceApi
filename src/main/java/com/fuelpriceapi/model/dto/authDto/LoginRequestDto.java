@@ -1,11 +1,10 @@
-package com.fuelpriceapi.dto.userDto;
+package com.fuelpriceapi.model.dto.authDto;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class LoginRequestDTO {
-
+public class LoginRequestDto {
     private String email;
     private String password;
 }
