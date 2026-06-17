@@ -15,30 +15,19 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-            .csrf(AbstractHttpConfigurer::disable)
+        @Bean
+        SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-            .sessionManagement(session ->
-                    session.sessionCreationPolicy(
-                            SessionCreationPolicy.STATELESS
-                    )
-            )
-
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/auth/**",
-                                "/health/**",
-                                "/swagger-ui/**",
-                                "/v3/api-docs/**"
+        return http
+                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(
+                                SessionCreationPolicy.STATELESS
                         )
-                        .permitAll()
-
-                        .anyRequest()
-                        .authenticated()
-                );       
-
-        return http.build();
-    }
+                )
+                .authorizeHttpRequests(auth ->
+                        auth.anyRequest().permitAll()
+                )
+                .build();
+        }
 }
