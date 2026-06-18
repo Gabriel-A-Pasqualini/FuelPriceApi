@@ -9,6 +9,5 @@ public record FuelUserClass (
     Date birthday,
     Long documentNumber,
     String email,   
-    String phone,
-    String password
+    String phone
 ) {}
