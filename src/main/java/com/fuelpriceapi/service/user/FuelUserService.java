@@ -1,6 +1,8 @@
 package com.fuelpriceapi.service.user;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 import com.fuelpriceapi.entity.user.FuelUser;
 import com.fuelpriceapi.model.classes.user.FuelUserClass;
@@ -31,4 +33,21 @@ public class FuelUserService {
             ))
             .toList();
     }
+
+    public List<FuelUserClass> getUsersByEmail(String email) {
+
+        Optional<FuelUser> users = userRepository.findByEmail(email);
+
+        return users.stream()
+            .map(user -> new FuelUserClass(
+                user.getId(),
+                user.getName(),
+                user.getLastName(),
+                user.getBirthday(),
+                user.getDocumentNumber(),
+                user.getEmail(),
+                user.getPhone()
+            ))
+            .toList();
+    }        
 }

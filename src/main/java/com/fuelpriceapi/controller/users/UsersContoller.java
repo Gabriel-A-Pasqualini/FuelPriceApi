@@ -29,5 +29,13 @@ public class UsersContoller {
         List<FuelUserClass> user = fuelUserService.getAllUsers();
         return ResponseEntity.ok(user);
     }
+
+    @Operation(summary = "Get user by email")
+    @GetMapping
+    public ResponseEntity<List<FuelUserClass>> getUserByEmail(String email) {
+        
+        List<FuelUserClass> user = fuelUserService.getUsersByEmail(email);
+        return ResponseEntity.ok(user);
+    }        
 }
 
