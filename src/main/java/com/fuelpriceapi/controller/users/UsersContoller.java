@@ -38,4 +38,3 @@ public class UsersContoller {
         return ResponseEntity.ok(user);
     }        
 }
-
