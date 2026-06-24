@@ -8,13 +8,10 @@ import com.fuelpriceapi.entity.user.FuelUser;
 
 public interface UserRepository extends JpaRepository<FuelUser, Long> {
 
+    List<FuelUser> findAll();    
+    FuelUser findById(long id);
     Optional<FuelUser> findByEmail(String email);
-
-    List<FuelUser> findAll(); 
-
-    @SuppressWarnings("unchecked")
-    FuelUser save(FuelUser user);  
-    
+         
     default List<FuelUser> findAllMock(){
         FuelUser user = new FuelUser(
             1L, 

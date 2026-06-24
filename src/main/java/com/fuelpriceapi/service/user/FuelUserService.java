@@ -1,6 +1,8 @@
 package com.fuelpriceapi.service.user;
 
 import java.util.List;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.fuelpriceapi.entity.user.FuelUser;
@@ -22,7 +24,7 @@ public class FuelUserService {
 
     public List<FuelUserClass> getAllUsers() {
 
-        List<FuelUser> users = userRepository.findAllMock();
+        List<FuelUser> users = userRepository.findAll();
 
         return users.stream()
             .map(user -> new FuelUserClass(
@@ -38,45 +40,51 @@ public class FuelUserService {
     }
 
     public FuelUserClass getUsersByEmail(String email) {
+        try{
+            FuelUser user =
+                userRepository.findByEmail(email)
+                    .orElseThrow(() ->
+                        new FuelPriceException(
+                            "User not found with email: " + email
+                        )
+                    );
 
-        FuelUser user =
-            userRepository.findByEmail(email)
-                .orElseThrow(() ->
-                    new FuelPriceException(
-                        "User not found with email: " + email
-                    )
-                );
-
-        return new FuelUserClass(
-            user.getId(),
-            user.getName(),
-            user.getLastName(),
-            user.getBirthday(),
-            user.getDocumentNumber(),
-            user.getEmail(),
-            user.getPhone()
-        );
+            return new FuelUserClass(
+                user.getId(),
+                user.getName(),
+                user.getLastName(),
+                user.getBirthday(),
+                user.getDocumentNumber(),
+                user.getEmail(),
+                user.getPhone()
+            );
+        }catch(Exception e){
+            throw new FuelPriceException(
+                "Error retrieving user by email: " + e.getMessage()
+            );
+        }
     }    
     
-    public FuelUserClass createUser(CreateUserDTO request) {
+    public FuelUserClass createUser(CreateUserDTO user) {
 
-        if (userRepository.findByEmail(request.email()).isPresent()) {
+        if (userRepository.findByEmail(user.email()).isPresent()) {
             throw new FuelPriceException(
                     "Email already registered");
         }
-      
 
-        FuelUser user = FuelUser.builder()
-                .name(request.name())
-                .lastName(request.lastName())
-                .birthday(request.birthday())
-                .documentNumber(request.documentNumber())
-                .email(request.email())
-                .phone(request.phone())
-                .password(passwordEncoder.encode(request.password()))
+        System.out.println(user);
+      
+        FuelUser userCreate = FuelUser.builder()
+                .name(user.name())
+                .lastName(user.lastName())
+                .birthday(user.birthday())
+                .documentNumber(user.documentNumber())
+                .email(user.email())
+                .phone(user.phone())
+                .password(passwordEncoder.encode(user.password()))
                 .build();
 
-        FuelUser savedUser = userRepository.save(user);
+        FuelUser savedUser = userRepository.save(userCreate);
 
         return new FuelUserClass(
                 savedUser.getId(),
@@ -88,4 +96,15 @@ public class FuelUserService {
                 savedUser.getPhone()
         );
     }   
+
+    public void deleteUser(Long id) {
+
+        if (!userRepository.existsById(id)) {
+            throw new FuelPriceException(
+                "User not found: " + HttpStatus.NOT_FOUND
+            );
+        }
+
+        userRepository.deleteById(id);
+    }    
 }
