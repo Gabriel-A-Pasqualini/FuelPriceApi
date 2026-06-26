@@ -106,5 +106,33 @@ public class FuelUserService {
         }
 
         userRepository.deleteById(id);
-    }    
+    }
+    
+    public FuelUserClass updateUser(Long id, CreateUserDTO user) {
+
+        FuelUser existingUser = userRepository.findById(id)
+            .orElseThrow(() -> new FuelPriceException(
+                "User not found: " + HttpStatus.NOT_FOUND
+            ));
+
+        existingUser.setName(user.name());
+        existingUser.setLastName(user.lastName());
+        existingUser.setBirthday(user.birthday());
+        existingUser.setDocumentNumber(user.documentNumber());
+        existingUser.setEmail(user.email());
+        existingUser.setPhone(user.phone());
+        existingUser.setPassword(passwordEncoder.encode(user.password()));
+
+        FuelUser updatedUser = userRepository.save(existingUser);
+
+        return new FuelUserClass(
+            updatedUser.getId(),
+            updatedUser.getName(),
+            updatedUser.getLastName(),
+            updatedUser.getBirthday(),
+            updatedUser.getDocumentNumber(),
+            updatedUser.getEmail(),
+            updatedUser.getPhone()
+        );
+    }
 }
